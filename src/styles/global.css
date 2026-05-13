@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    @apply bg-cream text-charcoal antialiased;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  body {
+    @apply min-h-screen bg-cream;
+    background-image:
+      radial-gradient(circle at 0% 0%, rgba(176, 131, 85, 0.06), transparent 40%),
+      radial-gradient(circle at 100% 100%, rgba(44, 51, 56, 0.05), transparent 40%);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', Impact, sans-serif;
+    @apply tracking-tight text-ink font-semibold;
+  }
+
+  h1 { @apply text-4xl sm:text-5xl lg:text-6xl; }
+  h2 { @apply text-3xl sm:text-4xl; }
+  h3 { @apply text-2xl sm:text-3xl; }
+
+  a {
+    @apply underline-offset-4 transition-colors;
+  }
+
+  ::selection {
+    @apply bg-copper/30 text-ink;
+  }
+}
+
+@layer components {
+  .container-rugged {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 font-display uppercase tracking-wide text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-copper focus-visible:ring-offset-2 focus-visible:ring-offset-cream disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-copper text-cream border-2 border-copper hover:bg-ink hover:border-ink;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-charcoal text-charcoal bg-transparent hover:bg-charcoal hover:text-cream;
+  }
+
+  .btn-ghost {
+    @apply btn text-charcoal hover:text-copper;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-none border border-charcoal/40 bg-cream/60 px-2 py-0.5 text-xs uppercase tracking-wider font-display text-charcoal;
+  }
+
+  .card-rugged {
+    @apply bg-cream border-2 border-charcoal/15 shadow-rugged transition-all;
+  }
+
+  .hr-rope {
+    @apply h-px w-full border-0 bg-gradient-to-r from-transparent via-charcoal/30 to-transparent;
+  }
+}

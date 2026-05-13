@@ -1,0 +1,82 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductDetail from '../../components/ProductDetail.astro';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+  return products.map((product) => ({
+    params: { slug: product.data.slug ?? product.id.replace(/\.md$/, '') },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const { Content } = await render(product);
+
+const productJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: product.data.name,
+  description: product.data.description,
+  category: product.data.category,
+  brand: {
+    '@type': 'Brand',
+    name: 'Longhorn Supply & Provision',
+  },
+  ...(product.data.cas && { identifier: `CAS ${product.data.cas}` }),
+  ...(product.data.molecularFormula && {
+    additionalProperty: [
+      { '@type': 'PropertyValue', name: 'Molecular Formula', value: product.data.molecularFormula },
+      ...(product.data.molecularWeight
+        ? [{ '@type': 'PropertyValue', name: 'Molecular Weight', value: `${product.data.molecularWeight} g/mol` }]
+        : []),
+      { '@type': 'PropertyValue', name: 'Purity', value: product.data.purity },
+    ],
+  }),
+  offers: product.data.sizes.map((s) => ({
+    '@type': 'Offer',
+    sku: s.sku,
+    name: `${product.data.name} — ${s.size}`,
+    availability: product.data.inStock
+      ? 'https://schema.org/InStock'
+      : 'https://schema.org/BackOrder',
+    priceCurrency: 'USD',
+  })),
+};
+
+const shortDesc = product.data.description.length > 150
+  ? product.data.description.slice(0, 147) + '…'
+  : product.data.description;
+---
+<BaseLayout
+  title={`${product.data.name} — Research Use Only`}
+  description={`${product.data.name} (${product.data.purity}). ${shortDesc}`}
+  jsonLd={productJsonLd}
+>
+  <ProductDetail product={product}>
+    <Content />
+  </ProductDetail>
+</BaseLayout>
+
+<style is:global>
+  .prose h2 {
+    font-family: 'Oswald', Impact, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-size: 1.25rem;
+    color: #1A1D20;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose h3 {
+    font-family: 'Oswald', Impact, sans-serif;
+    text-transform: uppercase;
+    font-size: 1rem;
+    color: #1A1D20;
+    margin-top: 1rem;
+  }
+  .prose p { font-size: 0.875rem; line-height: 1.7; color: #2C3338; margin-bottom: 0.75rem; }
+  .prose ul { list-style: disc; padding-left: 1.25rem; margin-top: 0.5rem; }
+  .prose li { font-size: 0.875rem; color: #2C3338; margin-bottom: 0.25rem; }
+</style>

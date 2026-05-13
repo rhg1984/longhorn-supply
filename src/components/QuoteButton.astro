@@ -1,0 +1,99 @@
+---
+interface Props {
+  sku: string;
+  name: string;
+  size: string;
+  category: string;
+  variant?: 'primary' | 'outline';
+  label?: string;
+  // When true, after adding to the list the user is navigated to /quote-request.
+  goToQuote?: boolean;
+  // Extra class names (e.g. width controls).
+  class?: string;
+}
+const {
+  sku,
+  name,
+  size,
+  category,
+  variant = 'primary',
+  label = 'Add to Quote List',
+  goToQuote = false,
+  class: extraClass = '',
+} = Astro.props;
+---
+<button
+  type="button"
+  class:list={[variant === 'primary' ? 'btn-primary' : 'btn-outline', extraClass]}
+  data-quote-add
+  data-sku={sku}
+  data-name={name}
+  data-size={size}
+  data-category={category}
+  data-go-to-quote={goToQuote ? 'true' : null}
+>
+  {label}
+</button>
+
+<script>
+  // Global delegated quote-list handler. Astro deduplicates this script across
+  // all uses of QuoteButton on a page, so it registers exactly once.
+  type Item = { sku: string; name: string; size: string; category: string; qty: number };
+  const STORAGE_KEY = 'lsp:quote-list:v1';
+
+  function readList(): Item[] {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const items = raw ? JSON.parse(raw) : [];
+      return Array.isArray(items) ? items : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function writeList(items: Item[]) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      window.dispatchEvent(new CustomEvent('lsp:quote-list:change'));
+    } catch {
+      /* localStorage blocked — fail soft */
+    }
+  }
+
+  function addItem(item: Omit<Item, 'qty'>) {
+    const items = readList();
+    const idx = items.findIndex((i) => i.sku === item.sku && i.size === item.size);
+    if (idx >= 0) {
+      items[idx].qty += 1;
+    } else {
+      items.push({ ...item, qty: 1 });
+    }
+    writeList(items);
+  }
+
+  document.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement)?.closest<HTMLElement>('[data-quote-add]');
+    if (!target) return;
+    e.preventDefault();
+    const { sku, name, size, category, goToQuote } = target.dataset;
+    if (!sku || !name || !size || !category) return;
+    addItem({ sku, name, size, category });
+
+    if (goToQuote === 'true') {
+      window.location.href = '/quote-request';
+      return;
+    }
+
+    // Inline confirmation
+    const original = target.textContent;
+    target.setAttribute('data-original-label', original ?? '');
+    target.textContent = '✓ Added to Quote List';
+    target.setAttribute('aria-live', 'polite');
+    target.setAttribute('disabled', 'true');
+    setTimeout(() => {
+      const label = target.getAttribute('data-original-label');
+      if (label !== null) target.textContent = label;
+      target.removeAttribute('disabled');
+    }, 1500);
+  });
+</script>

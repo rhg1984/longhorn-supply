@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ComplianceBlock from '../components/ComplianceBlock.astro';
+---
+<BaseLayout
+  title="Shipping & Returns"
+  description="Longhorn Supply & Provision domestic US shipping policy, handling of temperature-sensitive lots, and return policy on opened research materials."
+>
+  <article class="container-rugged py-12 lg:py-16 max-w-3xl">
+    <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">Logistics</p>
+    <h1 class="text-ink">Shipping &amp; Returns</h1>
+
+    <div class="prose max-w-none mt-8 text-charcoal leading-relaxed space-y-5">
+      <h2 class="text-ink font-display uppercase tracking-tight mt-8 text-2xl">Where We Ship</h2>
+      <p>
+        Longhorn Supply &amp; Provision ships to verified business and institutional addresses in the <strong>continental United States only</strong>. We do not ship to PO boxes, residential addresses that have not been verified, or any destination outside the US.
+      </p>
+
+      <h2 class="text-ink font-display uppercase tracking-tight mt-8 text-2xl">Handling Time</h2>
+      <p>
+        Orders confirmed and paid by 1:00 PM CT typically ship the same business day. Orders confirmed later ship the next business day. We do not ship on Saturdays, Sundays, or US federal holidays.
+      </p>
+
+      <h2 class="text-ink font-display uppercase tracking-tight mt-8 text-2xl">Carriers &amp; Service</h2>
+      <p>
+        Standard service is overnight or two-day via UPS or FedEx. Temperature-sensitive lots ship with gel packs or dry ice as required by the product specification. A signature may be required on delivery for higher-value orders.
+      </p>
+
+      <h2 class="text-ink font-display uppercase tracking-tight mt-8 text-2xl">Batch &amp; Lot Verification</h2>
+      <p>
+        Every package is labeled with the SKU and lot number for each item shipped. Inspect your order on arrival and verify the labels match your packing slip. Report discrepancies within 48 hours.
+      </p>
+
+      <h2 class="text-ink font-display uppercase tracking-tight mt-8 text-2xl">Damaged or Lost Shipments</h2>
+      <p>
+        If a shipment arrives damaged or fails to arrive within carrier transit estimates, contact us within 5 business days of the expected delivery date. We will work with the carrier on a claim and dispatch a replacement at no charge for verified losses.
+      </p>
+
+      <h2 class="text-ink font-display uppercase tracking-tight mt-8 text-2xl">Returns</h2>
+      <p>
+        Due to the nature of research materials, <strong>we do not accept returns on opened, reconstituted, or otherwise altered products</strong>. Sealed, undamaged, original-packaging items may be returned within 14 days of delivery for a refund of product cost (less return shipping) on a case-by-case basis. Contact us before shipping anything back.
+      </p>
+
+      <h2 class="text-ink font-display uppercase tracking-tight mt-8 text-2xl">Off-Spec Lots</h2>
+      <p>
+        If analytical data on a shipped lot falls outside the published specification, contact us with the SKU, lot number, and a brief description of the issue. We will replace the vial or refund the line item at our discretion.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <ComplianceBlock variant="full" />
+    </div>
+  </article>
+</BaseLayout>

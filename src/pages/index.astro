@@ -1,0 +1,132 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import ComplianceBlock from '../components/ComplianceBlock.astro';
+
+const allProducts = await getCollection('products');
+const featured = allProducts.filter((p) => p.data.featured).slice(0, 4);
+
+const categories = [
+  { slug: 'peptides', label: 'Peptides', blurb: 'Research-grade peptides supplied lyophilized for laboratory reconstitution.' },
+  { slug: 'amino-acids', label: 'Amino Acids', blurb: 'Reagent-grade amino acids and tripeptides for biochemistry and assay work.' },
+  { slug: 'supplies', label: 'Research Supplies', blurb: 'Bacteriostatic water, solvents, and bench consumables.' },
+  { slug: 'glassware', label: 'Glassware', blurb: 'Amber vials, stoppers, and storage glassware compatible with lab workflows.' },
+];
+
+const trustSignals = [
+  { title: 'Third-Party Tested', body: 'Independent labs verify identity and purity by HPLC and mass spectrometry on every lot.' },
+  { title: 'COAs On File', body: 'Certificates of Analysis are produced per lot and available on request.' },
+  { title: 'US Domestic Shipping', body: 'Shipped from a Texas facility with cold-chain handling on temperature-sensitive lots.' },
+  { title: 'Batch Tracking', body: 'Every vial is labeled with a lot number traceable to its analytical record.' },
+];
+---
+<BaseLayout
+  title="Longhorn Supply & Provision — Research Peptides & Lab Supplies"
+  description="Texas-based supplier of research-grade peptides, amino acids, and laboratory supplies. Third-party tested. COAs on file. For research use only."
+>
+  <!-- Hero -->
+  <section class="bg-cream border-b-2 border-charcoal/15 relative overflow-hidden">
+    <div class="absolute inset-0 bg-paper-grain opacity-50 pointer-events-none" aria-hidden="true"></div>
+    <div class="container-rugged relative py-16 lg:py-24 grid lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <p class="font-display uppercase tracking-[0.3em] text-copper text-sm mb-4">Texas-Built · Research-Grade</p>
+        <h1 class="text-ink">Reliable Compounds.<br/>Documented Quality.</h1>
+        <p class="mt-6 text-lg leading-relaxed text-charcoal max-w-prose">
+          Longhorn Supply &amp; Provision furnishes research peptides, amino acids, and laboratory consumables to qualified researchers and institutions. Every lot is third-party tested, documented, and shipped from our Texas facility.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/shop" class="btn-primary">Browse Catalog</a>
+          <a href="/quality" class="btn-outline">Our Quality Process</a>
+        </div>
+        <div class="mt-8 flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-display text-charcoal/60">
+          <span aria-hidden="true">★</span>
+          For Research Use Only — Not for Human Consumption
+        </div>
+      </div>
+      <div class="flex justify-center lg:justify-end">
+        <div class="relative">
+          <div class="absolute inset-0 bg-copper/10 blur-2xl scale-90 rounded-full" aria-hidden="true"></div>
+          <img
+            src="/logo.png"
+            alt="Longhorn Supply & Provision logo — longhorn bull with star and rope border"
+            width="420"
+            height="420"
+            class="relative h-72 w-72 lg:h-96 lg:w-96"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="container-rugged py-16">
+    <div class="flex items-end justify-between flex-wrap gap-4 mb-8">
+      <div>
+        <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">Catalog</p>
+        <h2 class="text-ink">Shop by Category</h2>
+      </div>
+      <a href="/shop" class="text-copper font-display uppercase tracking-wider text-sm hover:text-ink">View All →</a>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {categories.map((c) => (
+        <a
+          href={`/shop?category=${c.slug}`}
+          class="card-rugged p-6 no-underline group hover:border-copper transition-colors"
+        >
+          <h3 class="text-xl text-ink group-hover:text-copper transition-colors">{c.label}</h3>
+          <p class="mt-2 text-sm text-charcoal/80 leading-relaxed">{c.blurb}</p>
+          <span class="mt-4 inline-block font-display uppercase tracking-wider text-xs text-copper">
+            Explore →
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  {featured.length > 0 && (
+    <section class="bg-ink/[0.03] border-y-2 border-charcoal/10">
+      <div class="container-rugged py-16">
+        <div class="flex items-end justify-between flex-wrap gap-4 mb-8">
+          <div>
+            <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">Featured</p>
+            <h2 class="text-ink">In Stock &amp; Documented</h2>
+          </div>
+          <a href="/shop" class="text-copper font-display uppercase tracking-wider text-sm hover:text-ink">All Products →</a>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {featured.map((product) => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Trust Signals -->
+  <section class="container-rugged py-16">
+    <div class="text-center mb-10">
+      <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">Why Longhorn</p>
+      <h2 class="text-ink">Built for the Bench</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {trustSignals.map((t) => (
+        <div class="border-2 border-charcoal/15 bg-cream p-6">
+          <div class="h-10 w-10 border-2 border-copper flex items-center justify-center mb-4">
+            <span class="text-copper font-display text-xl" aria-hidden="true">★</span>
+          </div>
+          <h3 class="text-lg text-ink">{t.title}</h3>
+          <p class="mt-2 text-sm text-charcoal/80 leading-relaxed">{t.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Compliance Banner -->
+  <section class="container-rugged pb-16">
+    <ComplianceBlock variant="full" />
+  </section>
+</BaseLayout>

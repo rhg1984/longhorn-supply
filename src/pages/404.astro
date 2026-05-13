@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page Not Found" noindex>
+  <section class="container-rugged py-20 lg:py-28 text-center">
+    <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">404</p>
+    <h1 class="text-ink">This Trail's Gone Cold.</h1>
+    <p class="mt-4 text-charcoal/80 max-w-md mx-auto">
+      The page you were looking for doesn't exist, has moved, or never had a label printed for it.
+    </p>
+    <div class="mt-8 flex justify-center gap-3 flex-wrap">
+      <a href="/" class="btn-primary">Back to Home</a>
+      <a href="/shop" class="btn-outline">Browse Catalog</a>
+    </div>
+    <div class="mt-16 opacity-50">
+      <img src="/logo.png" alt="" width="120" height="120" class="mx-auto h-24 w-24" loading="lazy" decoding="async" />
+    </div>
+  </section>
+</BaseLayout>

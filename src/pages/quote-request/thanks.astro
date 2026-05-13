@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Quote Request Received"
+  description="Thanks — your quote request has been received. Longhorn Supply & Provision will reply by email."
+  noindex={true}
+>
+  <section class="container-rugged py-20 text-center max-w-2xl mx-auto">
+    <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">Received</p>
+    <h1 class="text-ink">Quote Request Submitted</h1>
+    <p class="mt-4 text-charcoal leading-relaxed">
+      Thanks for your request. A team member will follow up by email with pricing, current lot availability, and payment instructions — typically within one business day.
+    </p>
+    <p class="mt-3 text-sm text-charcoal/70">
+      Please check your spam folder if you don't see a reply. Add <strong>orders@longhornsupply.com</strong> to your safe senders.
+    </p>
+    <div class="mt-8 flex justify-center gap-3 flex-wrap">
+      <a href="/" class="btn-primary">Home</a>
+      <a href="/shop" class="btn-outline">Keep Browsing</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  try {
+    localStorage.removeItem('lsp:quote-list:v1');
+    window.dispatchEvent(new CustomEvent('lsp:quote-list:change'));
+  } catch {
+    /* ignore */
+  }
+</script>

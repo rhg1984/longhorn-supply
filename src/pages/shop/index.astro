@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import ComplianceBlock from '../../components/ComplianceBlock.astro';
+
+const products = (await getCollection('products'))
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+const categories = [
+  { slug: 'all', label: 'All Products' },
+  { slug: 'peptides', label: 'Peptides' },
+  { slug: 'amino-acids', label: 'Amino Acids' },
+  { slug: 'supplies', label: 'Supplies' },
+  { slug: 'glassware', label: 'Glassware' },
+];
+---
+<BaseLayout
+  title="Shop Catalog"
+  description="Browse Longhorn Supply & Provision's catalog of research peptides, amino acids, laboratory supplies, and glassware. For research use only."
+>
+  <section class="container-rugged py-10 lg:py-14">
+    <header class="mb-8">
+      <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">Catalog</p>
+      <h1 class="text-ink">Shop</h1>
+      <p class="mt-3 text-charcoal/80 max-w-2xl">
+        All products supplied for laboratory and research use only. Filter by category, then request a quote on any product page.
+      </p>
+    </header>
+
+    <nav class="flex flex-wrap gap-2 mb-8" aria-label="Category filter">
+      {categories.map((c) => (
+        <button
+          type="button"
+          data-category-filter={c.slug}
+          class:list={[
+            'px-4 py-2 border-2 font-display uppercase tracking-wider text-xs transition-colors',
+            c.slug === 'all'
+              ? 'border-ink bg-ink text-cream'
+              : 'border-charcoal/30 text-charcoal hover:border-charcoal hover:text-ink',
+          ]}
+        >
+          {c.label}
+        </button>
+      ))}
+    </nav>
+
+    <div id="product-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {products.map((product) => (
+        <div data-product-category={product.data.category}>
+          <ProductCard product={product} />
+        </div>
+      ))}
+    </div>
+
+    <p id="empty-state" hidden class="mt-10 text-center text-charcoal/60">
+      No products in this category. <a href="/shop" class="text-copper underline">View all</a>.
+    </p>
+
+    <div class="mt-12">
+      <ComplianceBlock variant="full" />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-category-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-product-category]');
+  const empty = document.getElementById('empty-state');
+
+  function applyFilter(category: string) {
+    let visible = 0;
+    items.forEach((item) => {
+      const matches = category === 'all' || item.dataset.productCategory === category;
+      item.hidden = !matches;
+      if (matches) visible += 1;
+    });
+    if (empty) empty.hidden = visible > 0;
+    buttons.forEach((b) => {
+      const active = b.dataset.categoryFilter === category;
+      b.classList.toggle('bg-ink', active);
+      b.classList.toggle('text-cream', active);
+      b.classList.toggle('border-ink', active);
+      b.classList.toggle('border-charcoal/30', !active);
+      b.classList.toggle('text-charcoal', !active);
+    });
+
+    const url = new URL(window.location.href);
+    if (category === 'all') url.searchParams.delete('category');
+    else url.searchParams.set('category', category);
+    history.replaceState(null, '', url.toString());
+  }
+
+  buttons.forEach((b) => {
+    b.addEventListener('click', () => {
+      const cat = b.dataset.categoryFilter ?? 'all';
+      applyFilter(cat);
+    });
+  });
+
+  // Honor ?category= on load
+  const initial = new URL(window.location.href).searchParams.get('category') ?? 'all';
+  applyFilter(initial);
+</script>

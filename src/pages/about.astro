@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ComplianceBlock from '../components/ComplianceBlock.astro';
+---
+<BaseLayout
+  title="About Us"
+  description="Longhorn Supply & Provision — Texas-based supplier of research peptides and laboratory consumables. Built on documentation, traceability, and customer service for the research community."
+>
+  <article class="container-rugged py-12 lg:py-16 max-w-3xl">
+    <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">Our Story</p>
+    <h1 class="text-ink">Built in Texas, Stocked for the Bench</h1>
+
+    <div class="prose max-w-none mt-8 text-charcoal leading-relaxed space-y-5">
+      <p>
+        Longhorn Supply &amp; Provision was founded by a small team with a simple frustration: too many research-supply vendors treat documentation as an afterthought. Lot numbers don't match certificates. COAs go missing. Storage instructions are vague. We started Longhorn to fix that — at least for the part of the catalog we could control.
+      </p>
+      <p>
+        We furnish research peptides, amino acids, laboratory water, and bench consumables to qualified researchers, contract labs, and academic institutions across the United States. Every lot we sell is third-party tested, labeled with a traceable identifier, and backed by a Certificate of Analysis on file.
+      </p>
+
+      <h2 class="text-ink font-display uppercase tracking-tight mt-10 text-2xl">Our Commitment</h2>
+      <ul class="space-y-2 pl-5 list-disc">
+        <li><strong>Documentation first.</strong> Identity, purity, and lot data accompany every order.</li>
+        <li><strong>Honest copy.</strong> We describe what our materials are — not what they do in a human.</li>
+        <li><strong>Service.</strong> If a vial arrives short, broken, or off-spec, we replace it. No script.</li>
+        <li><strong>Compliance.</strong> Sales are restricted to qualified researchers, 21 and older, in the United States.</li>
+      </ul>
+
+      <h2 class="text-ink font-display uppercase tracking-tight mt-10 text-2xl">Texas Roots</h2>
+      <p>
+        Our operation runs out of a small facility in Texas, where we handle inventory, label and stage shipments, and coordinate with the partner laboratories that perform our analytical work. We're not the biggest name in the catalog — that's the point.
+      </p>
+
+      <h2 class="text-ink font-display uppercase tracking-tight mt-10 text-2xl">Laboratory Partners</h2>
+      <p>
+        We work with independent, US-based analytical laboratories for HPLC purity verification, mass-spectrometry identity confirmation, and water-content (Karl Fischer) testing on peptide lots. Lab names and credentials are available on request to verified accounts.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <ComplianceBlock variant="full" />
+    </div>
+  </article>
+</BaseLayout>

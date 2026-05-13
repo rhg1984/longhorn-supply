@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /quote-request
+Disallow: /quote-request/
+Disallow: /cart
+Disallow: /cart/
+
+Sitemap: https://longhornsupply.com/sitemap-index.xml

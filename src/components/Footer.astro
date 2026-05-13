@@ -1,0 +1,63 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="mt-auto bg-ink text-cream/90">
+  <div class="container-rugged py-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <div class="flex items-center gap-3">
+        <img
+          src="/logo.png"
+          alt=""
+          width="48"
+          height="48"
+          class="h-10 w-10"
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="font-display text-lg uppercase tracking-wide text-cream">Longhorn Supply</span>
+      </div>
+      <p class="mt-4 text-sm text-cream/70 leading-relaxed">
+        Research-grade peptides and laboratory supplies for qualified researchers and institutions. Based in Texas. Tested in the United States.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="font-display text-sm uppercase tracking-[0.2em] text-copper">Shop</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/shop" class="no-underline text-cream/80 hover:text-cream">All Products</a></li>
+        <li><a href="/shop?category=peptides" class="no-underline text-cream/80 hover:text-cream">Peptides</a></li>
+        <li><a href="/shop?category=amino-acids" class="no-underline text-cream/80 hover:text-cream">Amino Acids</a></li>
+        <li><a href="/shop?category=supplies" class="no-underline text-cream/80 hover:text-cream">Research Supplies</a></li>
+        <li><a href="/shop?category=glassware" class="no-underline text-cream/80 hover:text-cream">Glassware</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-display text-sm uppercase tracking-[0.2em] text-copper">Company</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/about" class="no-underline text-cream/80 hover:text-cream">About</a></li>
+        <li><a href="/quality" class="no-underline text-cream/80 hover:text-cream">Quality &amp; COAs</a></li>
+        <li><a href="/shipping" class="no-underline text-cream/80 hover:text-cream">Shipping &amp; Returns</a></li>
+        <li><a href="/contact" class="no-underline text-cream/80 hover:text-cream">Contact</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-display text-sm uppercase tracking-[0.2em] text-copper">Legal</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/terms" class="no-underline text-cream/80 hover:text-cream">Terms of Service</a></li>
+        <li><a href="/privacy" class="no-underline text-cream/80 hover:text-cream">Privacy Policy</a></li>
+      </ul>
+      <p class="mt-4 text-xs text-cream/60 leading-relaxed">
+        Must be 21+ and a qualified researcher to purchase. US domestic shipping only.
+      </p>
+    </div>
+  </div>
+
+  <div class="border-t border-cream/10">
+    <div class="container-rugged py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-cream/60">
+      <p>&copy; {year} Longhorn Supply &amp; Provision. All rights reserved.</p>
+      <p class="font-display uppercase tracking-[0.2em] text-copper/80">For Research Use Only</p>
+    </div>
+  </div>
+</footer>

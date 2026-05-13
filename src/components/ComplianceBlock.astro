@@ -1,0 +1,29 @@
+---
+interface Props {
+  // 'compact' for sidebars or short blocks; 'full' for product-page boxed disclaimer.
+  variant?: 'compact' | 'full';
+}
+const { variant = 'full' } = Astro.props;
+---
+{variant === 'full' ? (
+  <aside class="border-2 border-ink bg-cream relative" role="note" aria-label="Research-use disclaimer">
+    <div class="absolute -top-3 left-4 bg-ink text-cream px-3 py-1 font-display text-xs uppercase tracking-[0.2em]">
+      Research Use Only
+    </div>
+    <div class="p-5 sm:p-6 pt-7 space-y-3">
+      <p class="font-display text-base sm:text-lg uppercase tracking-wide text-ink">
+        For Laboratory and Research Use Only — Not for Human Consumption.
+      </p>
+      <p class="text-sm text-charcoal leading-relaxed">
+        These products are <strong>not intended to diagnose, treat, cure, or prevent any disease</strong>. They are sold solely for in vitro research and laboratory experimentation by qualified personnel.
+      </p>
+      <p class="text-sm text-charcoal leading-relaxed">
+        Purchaser confirms they are a <strong>qualified researcher</strong> of legal age and that these materials will not be used in or on humans or animals, nor administered to themselves or others.
+      </p>
+    </div>
+  </aside>
+) : (
+  <p class="text-xs uppercase tracking-[0.2em] font-display text-charcoal/80 border-l-2 border-copper pl-3">
+    Research use only — not for human consumption.
+  </p>
+)}

@@ -1,0 +1,92 @@
+---
+import '../styles/global.css';
+import DisclaimerBar from '../components/DisclaimerBar.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import AgeGate from '../components/AgeGate.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description = 'Longhorn Supply & Provision — research peptides and laboratory supplies for qualified researchers. For research use only. Not for human consumption.',
+  image = '/logo.png',
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = new URL(image, Astro.site).toString();
+const fullTitle = title.includes('Longhorn') ? title : `${title} | Longhorn Supply & Provision`;
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Longhorn Supply & Provision',
+  url: Astro.site?.toString() ?? canonicalUrl,
+  logo: new URL('/logo.png', Astro.site).toString(),
+  description:
+    'Research peptides and laboratory supplies for qualified researchers. For research use only. Not for human consumption.',
+  address: {
+    '@type': 'PostalAddress',
+    addressRegion: 'TX',
+    addressCountry: 'US',
+  },
+};
+
+const jsonLdArray = [organizationJsonLd, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#EBE5D5" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Longhorn Supply & Provision" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="generator" content={Astro.generator} />
+
+    {jsonLdArray.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[200] focus:bg-ink focus:text-cream focus:px-3 focus:py-2 focus:font-display focus:uppercase focus:text-xs focus:tracking-wider"
+    >
+      Skip to main content
+    </a>
+    <DisclaimerBar />
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <AgeGate />
+  </body>
+</html>

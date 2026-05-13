@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ComplianceBlock from '../components/ComplianceBlock.astro';
+---
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Longhorn Supply & Provision. For quote, COA, or general inquiries from qualified researchers and institutions."
+>
+  <section class="container-rugged py-12 lg:py-16">
+    <div class="grid lg:grid-cols-5 gap-10">
+      <div class="lg:col-span-2">
+        <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">Contact</p>
+        <h1 class="text-ink">Get in Touch</h1>
+        <p class="mt-4 text-charcoal/80 leading-relaxed">
+          For COA requests, lot inquiries, custom quote requests, or anything else, send us a note. We typically reply within one business day.
+        </p>
+
+        <dl class="mt-8 space-y-4 text-sm">
+          <div>
+            <dt class="font-display uppercase tracking-wider text-xs text-charcoal/60">Email</dt>
+            <dd class="text-ink mt-1">
+              <a href="mailto:orders@longhornsupply.com" class="text-copper underline">orders@longhornsupply.com</a>
+            </dd>
+            <dd class="text-charcoal/60 text-xs mt-0.5">(Placeholder — update before launch)</dd>
+          </div>
+          <div>
+            <dt class="font-display uppercase tracking-wider text-xs text-charcoal/60">Hours</dt>
+            <dd class="text-ink mt-1">Mon–Fri, 9:00 AM – 5:00 PM CT</dd>
+          </div>
+          <div>
+            <dt class="font-display uppercase tracking-wider text-xs text-charcoal/60">Region</dt>
+            <dd class="text-ink mt-1">Texas, USA · Domestic US shipping only</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="lg:col-span-3">
+        <form
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="border-2 border-charcoal/20 bg-cream p-6 sm:p-8 space-y-5"
+        >
+          <input type="hidden" name="form-name" value="contact" />
+          <p hidden>
+            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+          </p>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="font-display uppercase tracking-wider text-xs text-charcoal/70">Name</span>
+              <input
+                type="text"
+                name="name"
+                required
+                autocomplete="name"
+                class="mt-1 block w-full border-2 border-charcoal/20 bg-cream px-3 py-2 focus:outline-none focus:border-copper"
+              />
+            </label>
+            <label class="block">
+              <span class="font-display uppercase tracking-wider text-xs text-charcoal/70">Business / Institutional Email</span>
+              <input
+                type="email"
+                name="email"
+                required
+                autocomplete="email"
+                class="mt-1 block w-full border-2 border-charcoal/20 bg-cream px-3 py-2 focus:outline-none focus:border-copper"
+              />
+            </label>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="font-display uppercase tracking-wider text-xs text-charcoal/70">Institution / Lab</span>
+              <input
+                type="text"
+                name="institution"
+                class="mt-1 block w-full border-2 border-charcoal/20 bg-cream px-3 py-2 focus:outline-none focus:border-copper"
+              />
+            </label>
+            <label class="block">
+              <span class="font-display uppercase tracking-wider text-xs text-charcoal/70">Subject</span>
+              <select
+                name="subject"
+                required
+                class="mt-1 block w-full border-2 border-charcoal/20 bg-cream px-3 py-2 focus:outline-none focus:border-copper"
+              >
+                <option value="general">General inquiry</option>
+                <option value="coa">COA request</option>
+                <option value="quote">Custom quote</option>
+                <option value="order-issue">Order issue</option>
+                <option value="bulk">Bulk / institutional pricing</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="block">
+            <span class="font-display uppercase tracking-wider text-xs text-charcoal/70">Message</span>
+            <textarea
+              name="message"
+              rows="6"
+              required
+              class="mt-1 block w-full border-2 border-charcoal/20 bg-cream px-3 py-2 focus:outline-none focus:border-copper resize-y"
+            ></textarea>
+          </label>
+
+          <label class="flex items-start gap-3 text-sm">
+            <input type="checkbox" name="research_use_only" value="confirmed" required class="mt-1 h-4 w-4 accent-copper" />
+            <span>
+              I confirm I am a qualified researcher (21+) and that any materials I purchase from Longhorn Supply &amp; Provision are for <strong>laboratory and research use only</strong>, and not for human or animal consumption.
+            </span>
+          </label>
+
+          <button type="submit" class="btn-primary w-full sm:w-auto">Send Message</button>
+
+          <p class="text-xs text-charcoal/60">
+            By submitting, you agree to our <a href="/terms" class="text-copper underline">Terms</a> and <a href="/privacy" class="text-copper underline">Privacy Policy</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <div class="mt-12">
+      <ComplianceBlock variant="full" />
+    </div>
+  </section>
+</BaseLayout>

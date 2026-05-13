@@ -1,0 +1,131 @@
+---
+// Full-screen age + qualification gate. Acceptance persisted in localStorage
+// under 'lsp:age-gate:v1'. Bump the version to force a re-acceptance.
+---
+<div
+  id="age-gate"
+  hidden
+  class="fixed inset-0 z-[100] bg-ink/95 backdrop-blur-sm flex items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="age-gate-title"
+  aria-describedby="age-gate-desc"
+>
+  <div class="w-full max-w-xl bg-cream border-2 border-charcoal shadow-rugged">
+    <div class="bg-ink text-cream px-6 py-4 flex items-center gap-3 border-b-2 border-copper">
+      <img src="/logo.png" alt="" width="40" height="40" class="h-10 w-10" />
+      <div>
+        <p class="font-display text-xs uppercase tracking-[0.25em] text-copper">Restricted Access</p>
+        <h2 id="age-gate-title" class="font-display text-xl uppercase tracking-tight text-cream">Qualified Researchers Only</h2>
+      </div>
+    </div>
+
+    <div class="px-6 py-6 space-y-4">
+      <p id="age-gate-desc" class="text-sm text-charcoal leading-relaxed">
+        Longhorn Supply &amp; Provision sells research peptides and laboratory supplies <strong class="text-ink">for laboratory and research use only</strong>. Our products are not intended for human consumption, not for use in food or drugs, and not for diagnostic or therapeutic purposes.
+      </p>
+      <p class="text-sm text-charcoal leading-relaxed">
+        To continue, please confirm the following:
+      </p>
+
+      <form id="age-gate-form" class="space-y-3 pt-2" novalidate>
+        <label class="flex items-start gap-3 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            name="age"
+            required
+            class="mt-1 h-5 w-5 accent-copper border-charcoal"
+          />
+          <span>I am at least <strong>21 years of age</strong>.</span>
+        </label>
+        <label class="flex items-start gap-3 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            name="researcher"
+            required
+            class="mt-1 h-5 w-5 accent-copper border-charcoal"
+          />
+          <span>I am a <strong>qualified researcher</strong> or lab professional purchasing for <strong>laboratory and research use only</strong>. I will not consume or administer these products.</span>
+        </label>
+        <label class="flex items-start gap-3 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            name="terms"
+            required
+            class="mt-1 h-5 w-5 accent-copper border-charcoal"
+          />
+          <span>I have read and agree to the <a href="/terms" class="text-copper underline">Terms of Service</a> and <a href="/privacy" class="text-copper underline">Privacy Policy</a>.</span>
+        </label>
+
+        <p id="age-gate-error" class="hidden text-sm text-red-700 font-medium" role="alert">
+          Please confirm all three statements to continue.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+          <button type="submit" class="btn-primary flex-1">Enter Site</button>
+          <a href="https://www.google.com" rel="noopener noreferrer" class="btn-outline flex-1 text-center">I Do Not Qualify</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="border-t border-charcoal/15 px-6 py-3 bg-cream/60">
+      <p class="text-[0.7rem] uppercase tracking-[0.2em] font-display text-charcoal/70 text-center">
+        Not for Human Consumption • Research Use Only
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'lsp:age-gate:v1';
+  const gate = document.getElementById('age-gate');
+  const form = document.getElementById('age-gate-form') as HTMLFormElement | null;
+  const errorEl = document.getElementById('age-gate-error');
+
+  function showGate() {
+    if (!gate) return;
+    gate.removeAttribute('hidden');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    // Focus first checkbox for keyboard users
+    requestAnimationFrame(() => {
+      gate.querySelector<HTMLInputElement>('input[type="checkbox"]')?.focus();
+    });
+  }
+
+  function hideGate() {
+    if (!gate) return;
+    gate.setAttribute('hidden', '');
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+  }
+
+  // Decide whether to show on load
+  try {
+    const accepted = localStorage.getItem(STORAGE_KEY);
+    if (!accepted) showGate();
+  } catch {
+    // localStorage blocked — fail safe and show the gate every time
+    showGate();
+  }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const ok = data.get('age') && data.get('researcher') && data.get('terms');
+    if (!ok) {
+      errorEl?.classList.remove('hidden');
+      return;
+    }
+    errorEl?.classList.add('hidden');
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ accepted: true, at: new Date().toISOString() }),
+      );
+    } catch {
+      /* ignore — still hide */
+    }
+    hideGate();
+  });
+</script>

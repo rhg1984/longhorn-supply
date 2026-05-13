@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ComplianceBlock from '../components/ComplianceBlock.astro';
+
+const checks = [
+  {
+    title: 'HPLC Purity',
+    body: 'Reverse-phase high-performance liquid chromatography establishes peptide purity by area-percent. Our specification is ≥98% for most peptide products and ≥99% where stated on the product page.',
+  },
+  {
+    title: 'Mass Spectrometry Identity',
+    body: 'Electrospray-ionization mass spectrometry confirms molecular mass within tolerance of the theoretical molecular weight, verifying identity of the peptide.',
+  },
+  {
+    title: 'Karl Fischer / Water Content',
+    body: 'Where applicable, water content is measured to characterize lyophilized peptide salts and ensure consistent net-peptide mass per vial.',
+  },
+  {
+    title: 'Lot Traceability',
+    body: 'Every vial is labeled with a lot identifier that links back to its analytical record, manufacture date, and incoming inspection notes.',
+  },
+];
+---
+<BaseLayout
+  title="Quality & Certificates of Analysis"
+  description="How Longhorn Supply & Provision verifies purity and identity on every lot: HPLC, mass spectrometry, Karl Fischer water content, and full lot traceability."
+>
+  <section class="container-rugged py-12 lg:py-16 max-w-4xl">
+    <p class="font-display uppercase tracking-[0.3em] text-copper text-xs mb-1">Quality</p>
+    <h1 class="text-ink">Tested, Documented, Traceable</h1>
+    <p class="mt-4 text-lg text-charcoal/80 max-w-prose">
+      Documentation is the difference between a research-grade compound and a question mark. Every lot in our catalog is supported by analytical data we can produce on request.
+    </p>
+
+    <div class="mt-10 grid sm:grid-cols-2 gap-4">
+      {checks.map((c) => (
+        <div class="border-2 border-charcoal/15 bg-cream p-6">
+          <h2 class="font-display uppercase tracking-tight text-xl text-ink">{c.title}</h2>
+          <p class="mt-2 text-sm text-charcoal/80 leading-relaxed">{c.body}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-12 border-2 border-ink bg-cream p-6 sm:p-8">
+      <h2 class="font-display uppercase tracking-tight text-2xl text-ink">Requesting a COA</h2>
+      <p class="mt-3 text-charcoal leading-relaxed">
+        Certificates of Analysis are available for every active lot. Include the SKU and lot number from your shipping label when requesting one. We can deliver COAs in PDF by email, typically within one business day.
+      </p>
+      <a href="/contact" class="btn-primary mt-5">Request a COA</a>
+    </div>
+
+    <div class="mt-12">
+      <ComplianceBlock variant="full" />
+    </div>
+  </section>
+</BaseLayout>

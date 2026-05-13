@@ -1,0 +1,193 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ComplianceBlock from './ComplianceBlock.astro';
+import QuoteButton from './QuoteButton.astro';
+
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+const { product } = Astro.props;
+const {
+  name,
+  category,
+  purity,
+  sizes,
+  cas,
+  molecularFormula,
+  molecularWeight,
+  description,
+  storage,
+  coaUrl,
+  inStock,
+} = product.data;
+
+const categoryLabel: Record<string, string> = {
+  peptides: 'Peptide',
+  'amino-acids': 'Amino Acid',
+  supplies: 'Research Supply',
+  glassware: 'Glassware',
+};
+
+const initialSize = sizes[0];
+---
+<section class="container-rugged py-10 lg:py-14">
+  <nav class="text-xs uppercase tracking-wider font-display text-charcoal/60 mb-6" aria-label="Breadcrumb">
+    <a href="/" class="hover:text-copper no-underline">Home</a>
+    <span class="mx-2">/</span>
+    <a href="/shop" class="hover:text-copper no-underline">Shop</a>
+    <span class="mx-2">/</span>
+    <span class="text-ink">{name}</span>
+  </nav>
+
+  <div class="grid gap-10 lg:grid-cols-5">
+    <div class="lg:col-span-2">
+      <div class="aspect-square bg-ink/5 bg-paper-grain border-2 border-charcoal/15 flex items-center justify-center">
+        <img
+          src="/logo.png"
+          alt=""
+          width="240"
+          height="240"
+          loading="lazy"
+          decoding="async"
+          class="h-40 w-40 opacity-40"
+        />
+      </div>
+      <div class="mt-4 hidden lg:block">
+        <ComplianceBlock variant="full" />
+      </div>
+    </div>
+
+    <div class="lg:col-span-3 flex flex-col gap-6">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="badge">{categoryLabel[category]}</span>
+          {inStock ? (
+            <span class="badge text-copper border-copper/40">In Stock</span>
+          ) : (
+            <span class="badge text-charcoal/50">Backordered</span>
+          )}
+        </div>
+        <h1 class="text-4xl lg:text-5xl text-ink">{name}</h1>
+        <p class="mt-3 text-base leading-relaxed text-charcoal">{description}</p>
+      </div>
+
+      <dl class="grid grid-cols-2 sm:grid-cols-3 gap-3 border-y border-charcoal/15 py-4 text-sm">
+        {cas && (
+          <div>
+            <dt class="font-display uppercase tracking-wider text-xs text-charcoal/60">CAS Number</dt>
+            <dd class="text-ink font-medium mt-0.5">{cas}</dd>
+          </div>
+        )}
+        {molecularFormula && (
+          <div>
+            <dt class="font-display uppercase tracking-wider text-xs text-charcoal/60">Molecular Formula</dt>
+            <dd class="text-ink font-medium mt-0.5 font-mono text-xs">{molecularFormula}</dd>
+          </div>
+        )}
+        {molecularWeight && (
+          <div>
+            <dt class="font-display uppercase tracking-wider text-xs text-charcoal/60">Molecular Weight</dt>
+            <dd class="text-ink font-medium mt-0.5">{molecularWeight} g/mol</dd>
+          </div>
+        )}
+        <div>
+          <dt class="font-display uppercase tracking-wider text-xs text-charcoal/60">Purity</dt>
+          <dd class="text-ink font-medium mt-0.5">{purity}</dd>
+        </div>
+        <div>
+          <dt class="font-display uppercase tracking-wider text-xs text-charcoal/60">Storage</dt>
+          <dd class="text-ink font-medium mt-0.5 text-xs">{storage.split('.')[0]}.</dd>
+        </div>
+        <div>
+          <dt class="font-display uppercase tracking-wider text-xs text-charcoal/60">COA</dt>
+          <dd class="text-ink font-medium mt-0.5">
+            {coaUrl ? (
+              <a href={coaUrl} class="text-copper underline" target="_blank" rel="noopener noreferrer">Download</a>
+            ) : (
+              <span class="text-charcoal/60">Available on request</span>
+            )}
+          </dd>
+        </div>
+      </dl>
+
+      <form id="product-size-form" class="space-y-4" novalidate>
+        <fieldset>
+          <legend class="font-display uppercase tracking-wider text-xs text-charcoal/60 mb-2">Select Size</legend>
+          <div class="grid sm:grid-cols-2 gap-2">
+            {sizes.map((s, i) => (
+              <label
+                class:list={[
+                  'flex items-center justify-between gap-3 border-2 px-4 py-3 cursor-pointer transition-all',
+                  'has-[:checked]:border-copper has-[:checked]:bg-copper/5',
+                  'border-charcoal/20 hover:border-charcoal/50',
+                ]}
+              >
+                <span class="flex items-center gap-3">
+                  <input
+                    type="radio"
+                    name="size"
+                    value={s.sku}
+                    data-size={s.size}
+                    checked={i === 0}
+                    class="h-4 w-4 accent-copper"
+                  />
+                  <span class="font-display text-sm uppercase tracking-wide text-ink">{s.size}</span>
+                </span>
+                <span class="text-xs text-charcoal/60 font-mono">{s.sku}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <QuoteButton
+            sku={initialSize.sku}
+            name={name}
+            size={initialSize.size}
+            category={category}
+            variant="primary"
+            label="Request Quote"
+            goToQuote={true}
+            class="flex-1"
+          />
+          <QuoteButton
+            sku={initialSize.sku}
+            name={name}
+            size={initialSize.size}
+            category={category}
+            variant="outline"
+            label="Add to Quote List"
+            class="flex-1"
+          />
+        </div>
+        <p class="text-xs text-charcoal/60">
+          Quotes are returned by email with pricing and payment instructions. No payment is collected on this site.
+        </p>
+      </form>
+
+      <div class="lg:hidden">
+        <ComplianceBlock variant="full" />
+      </div>
+
+      <div class="prose prose-sm max-w-none border-t border-charcoal/15 pt-6">
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('product-size-form');
+  if (form) {
+    form.addEventListener('change', (e) => {
+      const radio = e.target as HTMLInputElement;
+      if (radio.name !== 'size') return;
+      const sku = radio.value;
+      const size = radio.dataset.size ?? '';
+      form.querySelectorAll<HTMLButtonElement>('[data-quote-add]').forEach((btn) => {
+        btn.dataset.sku = sku;
+        btn.dataset.size = size;
+      });
+    });
+  }
+</script>
