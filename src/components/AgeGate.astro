@@ -5,13 +5,14 @@
 <div
   id="age-gate"
   hidden
-  class="fixed inset-0 z-[100] bg-ink/95 backdrop-blur-sm flex items-center justify-center p-4"
+  class="fixed inset-0 z-[100] bg-ink/95 backdrop-blur-sm overflow-y-auto overscroll-contain"
   role="dialog"
   aria-modal="true"
   aria-labelledby="age-gate-title"
   aria-describedby="age-gate-desc"
 >
-  <div class="w-full max-w-xl bg-cream border-2 border-charcoal shadow-rugged">
+  <div class="min-h-full flex items-start sm:items-center justify-center p-4 sm:p-6 py-6">
+  <div class="w-full max-w-xl bg-cream border-2 border-charcoal shadow-rugged my-auto">
     <div class="bg-ink text-cream px-6 py-4 flex items-center gap-3 border-b-2 border-copper">
       <img src="/logo.png" alt="" width="40" height="40" class="h-10 w-10" />
       <div>
@@ -73,6 +74,7 @@
         Not for Human Consumption • Research Use Only
       </p>
     </div>
+  </div>
   </div>
 </div>
 
